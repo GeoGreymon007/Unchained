@@ -1,0 +1,22 @@
+# Use the official Python image as the base image
+FROM python:3.8-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file into the container and install the dependencies
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+# Copy the Flask application code and the Google Cloud Vision credentials file
+COPY app.py app.py
+COPY service.json service.json
+
+# Expose the port on which the Flask app will run
+EXPOSE 5000
+
+# Define environment variable for Google Cloud Vision credentials
+ENV GOOGLE_APPLICATION_CREDENTIALS /app/service.json
+
+# Run the Flask app
+CMD ["python", "app.py"]
